@@ -1,0 +1,36 @@
+{
+  "name": "bhumisetu",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+<<<<<<< HEAD
+    "maplibre-gl": "^6.9.0",
+=======
+>>>>>>> 7629e8690aa584f966762c38735098fe03918579
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.4.1",
+<<<<<<< HEAD
+    "pdf-parse": "^2.4.5",
+=======
+>>>>>>> 7629e8690aa584f966762c38735098fe03918579
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
+  }
+}

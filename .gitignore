@@ -1,0 +1,10 @@
+node_modules
+dist
+*.local
+.DS_Store
+<<<<<<< HEAD
+.env
+pdf-extract.txt
+vite-dev.log
+=======
+>>>>>>> 7629e8690aa584f966762c38735098fe03918579

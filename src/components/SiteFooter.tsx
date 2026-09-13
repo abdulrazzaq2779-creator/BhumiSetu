@@ -1,4 +1,4 @@
-import { EmblemMark } from './SiteHeader';
+import BhoomiSetuLogo from './BhoomiSetuLogo';
 
 const QUICK_LINKS = [
   { label: 'Risk Dashboard', href: '#/dashboard' },
@@ -22,7 +22,7 @@ export default function SiteFooter() {
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
         <div>
           <div className="flex items-center gap-3">
-            <EmblemMark className="h-9 w-9" />
+            <BhoomiSetuLogo className="h-9 w-9" />
             <div className="leading-tight">
               <p className="font-serif text-lg font-bold text-ink">Bhoomi Setu</p>
               <p className="text-xs text-ink-soft">
@@ -78,7 +78,7 @@ export default function SiteFooter() {
           <p>© 2026 Ministry of Rural Development, Government of India.</p>
           <p>
             Referenced legislation: {ACTS_AND_RULES[0].slice(0, 60)}… · Imagery:
-            Unsplash
+            Wikimedia Commons / Unsplash
           </p>
         </div>
       </div>

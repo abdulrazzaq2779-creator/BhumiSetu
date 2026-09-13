@@ -1,12 +1,21 @@
 import type { ReactNode } from 'react';
 import { routeHref, type Route } from '../hooks/useRoute';
+import tileDashboard from '../assets/tile-dashboard.jpg';
+import tileMap from '../assets/tile-map.jpg';
+import tileReports from '../assets/tile-reports.jpg';
+import tileCompensation from '../assets/tile-compensation.jpg';
+import tileFaq from '../assets/tile-faq.jpg';
+import tileGrievance from '../assets/tile-grievance.jpg';
 
-/** Thin stroke icons — kept on one stroke width so the grid reads as a set. */
+/**
+ * Large stroke icons — the visual anchor of each tile. Drawn on a 24-unit
+ * grid at 1.5 stroke so they scale to 56px without thickening clumsily.
+ */
 function Icon({ children }: { children: ReactNode }) {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-6 w-6"
+      className="h-14 w-14"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.5"
@@ -59,11 +68,19 @@ const ICONS = {
   ),
 } as const;
 
+interface HoverImage {
+  src: string;
+  /** Decorative; kept here only so a future tile can opt into real alts. */
+  alt?: string;
+}
+
 interface Tile {
   title: string;
   subtitle: string;
   icon: keyof typeof ICONS;
   route: Route;
+  /** Thematic photo revealed behind the tile on hover (see CREDITS.md). */
+  hoverImage?: HoverImage;
 }
 
 const TILES: Tile[] = [
@@ -72,40 +89,54 @@ const TILES: Tile[] = [
     subtitle: 'Colour-coded risk across all monitored projects',
     icon: 'dashboard',
     route: 'dashboard',
+    hoverImage: { src: tileDashboard },
   },
   {
     title: 'Risk Map',
     subtitle: 'Geographic view of projects by risk level',
     icon: 'search',
     route: 'map',
+    hoverImage: { src: tileMap },
   },
   {
     title: 'District Reports',
     subtitle: 'Monthly risk summaries by district and project type',
     icon: 'report',
     route: 'reports',
+    hoverImage: { src: tileReports },
   },
   {
     title: 'Compensation Tracker',
     subtitle: 'Offers vs. market rate, disbursement progress',
     icon: 'rupee',
     route: 'dashboard',
+    hoverImage: { src: tileCompensation },
   },
   {
     title: 'Frequently Asked Questions',
     subtitle: 'How scoring works, who can access what',
     icon: 'faq',
     route: 'faqs',
+    hoverImage: { src: tileFaq },
   },
   {
     title: 'Grievance Redressal',
     subtitle: 'File and track landowner grievances online',
     icon: 'grievance',
     route: 'faqs',
+    hoverImage: { src: tileGrievance },
   },
 ];
 
-/** Important Links content block, rendered inside the landing layout. */
+/** Shared hover/focus reveal modifiers. Keyboard focus gets the same
+ *  treatment as hover via group-focus-within (the tile itself is the link). */
+const REVEAL =
+  'motion-safe:group-hover:opacity-100 motion-safe:group-focus-within:opacity-100';
+/** Transitions exist only for motion-safe users; reduced-motion users get
+ *  instant state changes instead of animated ones. */
+const FADE = 'motion-safe:transition-opacity motion-safe:duration-200';
+
+/** Important Links content block: a spacious 3×2 grid of large tiles. */
 export default function ImportantLinks() {
   return (
     <section aria-labelledby="links-heading">
@@ -117,20 +148,70 @@ export default function ImportantLinks() {
         project-affected families.
       </p>
 
-      <div className="mt-6 grid gap-px border border-line bg-line sm:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
         {TILES.map((tile) => (
           <a
             key={tile.title}
             href={routeHref(tile.route)}
-            className="group flex items-start gap-4 bg-surface p-5 transition-colors hover:bg-parchment-deep"
+            className="group relative flex min-h-[280px] flex-col overflow-hidden border border-line bg-surface px-6 py-10 transition-colors hover:bg-parchment-deep"
           >
-            <span className="mt-0.5 text-accent">{ICONS[tile.icon]}</span>
-            <span>
-              <span className="block font-semibold text-ink group-hover:text-accent">
-                {tile.title}
+            {/*
+             * Hover-reveal image layer: full-bleed cover photo under a dark
+             * scrim, crossfading in 200ms. Removed entirely under
+             * prefers-reduced-motion — the tile keeps its flat color change.
+             */}
+            {tile.hoverImage && (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 motion-reduce:hidden"
+              >
+                <img
+                  src={tile.hoverImage.src}
+                  alt={tile.hoverImage.alt ?? ''}
+                  loading="lazy"
+                  decoding="async"
+                  className={`h-full w-full object-cover object-center opacity-0 ${FADE} ${REVEAL}`}
+                />
+                <span
+                  className={`absolute inset-0 bg-ink/75 opacity-0 ${FADE} ${REVEAL}`}
+                />
               </span>
-              <span className="mt-1 block text-[13px] leading-relaxed text-ink-soft">
-                {tile.subtitle}
+            )}
+
+            {/* Icon — the visual anchor. */}
+            <span className="relative text-accent transition-colors duration-300 motion-safe:group-hover:text-parchment motion-safe:group-focus-within:text-parchment motion-reduce:transition-none">
+              {ICONS[tile.icon]}
+            </span>
+
+            {/* Title + subtitle, each with breathing room. Text flips light
+                over the darkened photo so it stays legible throughout. */}
+            <span className="relative mt-6 block text-xl font-semibold leading-snug text-ink transition-colors duration-300 motion-safe:group-hover:text-parchment motion-safe:group-focus-within:text-parchment motion-reduce:transition-none">
+              {tile.title}
+            </span>
+            <span className="relative mb-6 mt-3 block text-sm leading-relaxed text-ink-soft transition-colors duration-300 motion-safe:group-hover:text-parchment/80 motion-safe:group-focus-within:text-parchment/80 motion-reduce:transition-none">
+              {tile.subtitle}
+            </span>
+
+            {/*
+             * Bottom slot: a circular "+" in the flat state, swapped for a
+             * white "Read More" chip when the tile is hovered/focused and a
+             * destination exists. Decorative — the whole tile is the link.
+             */}
+            <span aria-hidden="true" className="relative mt-auto block h-10">
+              <span
+                className={`absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-full border border-line-strong text-ink-soft transition-opacity duration-200 group-hover:opacity-0 group-focus-within:opacity-0 motion-reduce:[transition:none]`}
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </span>
+              <span
+                className={`absolute left-0 top-0 inline-flex h-10 items-center gap-2 bg-white pl-3 pr-4 text-[13px] font-semibold text-ink opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:[transition:none]`}
+              >
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-accent" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                Read More
               </span>
             </span>
           </a>

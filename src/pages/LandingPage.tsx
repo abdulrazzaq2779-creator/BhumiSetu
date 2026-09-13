@@ -32,10 +32,13 @@ export default function LandingPage() {
 
           <div className="min-w-0">
             <AboutSection />
-            <div className="mt-12">
-              <ImportantLinks />
-            </div>
           </div>
+        </div>
+
+        {/* Full-width spacious link tiles — three ~340px columns need the
+            whole content width, so this sits below the ticker/About row. */}
+        <div className="pb-16">
+          <ImportantLinks />
         </div>
       </div>
     </>

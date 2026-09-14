@@ -98,7 +98,7 @@ export function createRuleEngine(
         driver: 'litigation',
         points: litigationPoints,
         explanation: input.litigationFlag
-          ? 'Active litigation or stay order on this plot (Gandipet-style court stop)'
+          ? 'Active litigation or stay order on this plot'
           : 'No active litigation on record',
       });
 

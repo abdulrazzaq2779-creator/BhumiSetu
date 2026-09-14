@@ -4,6 +4,7 @@ import {
   monitoredProjects,
   uniqueStates,
   uniqueDistrictsFor,
+  litigationNoteFor,
   type MonitoredProject,
 } from '../data/projects';
 import PlotBreakdownSection from '../components/PlotBreakdownSection';
@@ -30,7 +31,13 @@ function scoreAll(rows: MonitoredProject[]): ScoredRow[] {
   return rows
     .map((project) => {
       const r = engine.predict(project.riskInput);
-      return { project, score: r.score, level: r.level, topReason: r.explanations[0] ?? '' };
+      // A litigated project leads with its own litigation wording (data
+      // file) instead of the engine's generic one-liner.
+      const topReason =
+        project.riskInput.litigationFlag
+          ? litigationNoteFor(project)
+          : (r.explanations[0] ?? '');
+      return { project, score: r.score, level: r.level, topReason };
     })
     .sort((a, b) => b.score - a.score);
 }

@@ -78,7 +78,7 @@ export default function SiteHeader({ active }: { active: Route }) {
             );
           })}
           <a
-            href={routeHref('dashboard')}
+            href={routeHref('login')}
             className="ml-4 border border-accent bg-accent px-5 py-1.5 text-sm font-semibold text-parchment transition-colors hover:bg-accent-deep"
           >
             Login

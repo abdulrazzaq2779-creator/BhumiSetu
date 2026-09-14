@@ -13,6 +13,7 @@ export type Route =
   | 'about'
   | 'faqs'
   | 'backtest'
+  | 'login'
   | { project: string };
 
 const ROUTES: Route[] = [
@@ -23,6 +24,7 @@ const ROUTES: Route[] = [
   'about',
   'faqs',
   'backtest',
+  'login',
 ];
 
 function parseHash(): Route {

@@ -2,10 +2,12 @@ import TopBar from './components/TopBar';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
 import LandingPage from './pages/LandingPage';
+import AboutPage from './pages/AboutPage';
 import DashboardPage from './pages/DashboardPage';
 import BacktestPage from './pages/BacktestPage';
 import MapPage from './pages/MapPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
+import LoginPage from './pages/LoginPage';
 import StubPage from './pages/StubPage';
 import { useRoute } from './hooks/useRoute';
 
@@ -26,18 +28,14 @@ export default function App() {
             {route === 'dashboard' && <DashboardPage />}
             {route === 'backtest' && <BacktestPage />}
             {route === 'map' && <MapPage />}
+            {route === 'login' && <LoginPage />}
             {route === 'reports' && (
               <StubPage
                 title="District Reports"
                 note="Monthly district-wise risk summaries, project-type breakdowns and downloadable statements will be published here."
               />
             )}
-            {route === 'about' && (
-              <StubPage
-                title="About Bhoomi Setu"
-                note="Detailed methodology: the five scoring factors, their weights, data sources and the backtest evidence behind the engine."
-              />
-            )}
+            {route === 'about' && <AboutPage />}
             {route === 'faqs' && (
               <StubPage
                 title="Frequently Asked Questions"

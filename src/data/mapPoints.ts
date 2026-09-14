@@ -6,7 +6,7 @@
  * the map component only depends on this file's exports.
  */
 import { createRuleEngine } from '../engine';
-import { monitoredProjects } from './projects';
+import { monitoredProjects, litigationNoteFor } from './projects';
 import type { RiskLevel } from '../engine/types';
 
 export interface MapPoint {
@@ -30,6 +30,14 @@ const engine = createRuleEngine();
 
 export const mapPoints: MapPoint[] = monitoredProjects.map((project) => {
   const prediction = engine.predict(project.riskInput);
+  // Swap the engine's generic litigation explanation for the project's own
+  // wording, keeping the driver order and count otherwise identical.
+  const drivers = prediction.explanations.map((explanation) =>
+    project.riskInput.litigationFlag &&
+    explanation.startsWith('Active litigation or stay order')
+      ? litigationNoteFor(project)
+      : explanation,
+  );
   return {
     id: project.id,
     name: project.name,
@@ -39,7 +47,7 @@ export const mapPoints: MapPoint[] = monitoredProjects.map((project) => {
     lng: project.lng,
     riskLevel: prediction.level,
     riskScore: prediction.score,
-    drivers: prediction.explanations.slice(0, 3),
+    drivers: drivers.slice(0, 3),
     progressPct: project.progressPct,
     summary: project.summary,
   };

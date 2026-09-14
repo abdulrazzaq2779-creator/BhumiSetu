@@ -17,7 +17,7 @@ import {
 } from '../engine';
 import { DRIVER_LABELS, factorToPlainLanguage } from '../engine/explain';
 import { getRecommendation } from '../engine/recommend';
-import { monitoredProjects } from '../data/projects';
+import { monitoredProjects, litigationNoteFor } from '../data/projects';
 import { routeHref } from '../hooks/useRoute';
 
 const engine = createRuleEngine();
@@ -192,7 +192,15 @@ export default function ProjectDetailPage({ projectId }: { projectId: string }) 
             {factorRows.map((row) => {
               const isOpen = expanded === row.driver;
               const detailIdx = base.topDrivers.indexOf(row.driver);
-              const detail = detailIdx >= 0 ? base.explanations[detailIdx] : '';
+              // Litigated projects show their own litigation wording instead
+              // of the engine's generic one-liner; other factors keep the
+              // engine's explanation verbatim.
+              const detail =
+                row.driver === 'litigation' && project.riskInput.litigationFlag
+                  ? litigationNoteFor(project)
+                  : detailIdx >= 0
+                    ? (base.explanations[detailIdx] ?? '')
+                    : '';
               return (
                 <li key={row.driver} className="border border-line bg-surface">
                   <button

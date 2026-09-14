@@ -39,6 +39,13 @@ export interface MonitoredProject {
   /** Thematic photo revealed behind the dashboard card on hover (see CREDITS.md). */
   thumbnailImage: string;
   riskInput: PlotRiskInput;
+  /**
+   * Project-specific wording for the litigation display row — replaces the
+   * engine's generic litigation explanation on surfaces that show project
+   * detail, so every litigated project does not repeat one hardcoded
+   * phrase. Present only when `riskInput.litigationFlag` is true.
+   */
+  litigationNote?: string;
 }
 
 export const monitoredProjects: MonitoredProject[] = [
@@ -60,6 +67,8 @@ export const monitoredProjects: MonitoredProject[] = [
       approvalDelayDays: 45,
       rrFamiliesAwaitingResettlement: 60,
     },
+    litigationNote:
+      'Assigned-land parity case pending before the High Court',
   },
   {
     id: 'LAP-2021-006',
@@ -98,6 +107,8 @@ export const monitoredProjects: MonitoredProject[] = [
       approvalDelayDays: 20,
       rrFamiliesAwaitingResettlement: 120,
     },
+    litigationNote:
+      'Court-issued stay order on dispossession pending review',
   },
   {
     id: 'LAP-2022-032',
@@ -174,6 +185,8 @@ export const monitoredProjects: MonitoredProject[] = [
       approvalDelayDays: 200,
       rrFamiliesAwaitingResettlement: 30,
     },
+    litigationNote:
+      'Compensation and land-diversion disputes under judicial review',
   },
   {
     id: 'LAP-2015-021',
@@ -231,6 +244,8 @@ export const monitoredProjects: MonitoredProject[] = [
       approvalDelayDays: 30,
       rrFamiliesAwaitingResettlement: 150,
     },
+    litigationNote:
+      'Dispossession challenged before the court; 7,529 returnable plots held up',
   },
   {
     id: 'LAP-2019-014',
@@ -315,6 +330,16 @@ export const uniqueStates = [...new Set(monitoredProjects.map((p) => p.state))].
 export function uniqueDistrictsFor(state: string): string[] {
   const pool = state === '' ? monitoredProjects : monitoredProjects.filter((p) => p.state === state);
   return [...new Set(pool.map((p) => p.district))].sort();
+}
+
+/**
+ * Display text for a project's litigation status. Litigated projects carry
+ * their own `litigationNote` wording; the generic on-record line is the
+ * fallback. Display-only — the underlying `litigationFlag` scoring input is
+ * untouched.
+ */
+export function litigationNoteFor(project: MonitoredProject): string {
+  return project.litigationNote ?? 'Active litigation on record for this project';
 }
 
 // ── "What's New" ticker ──────────────────────────────────────────────────────

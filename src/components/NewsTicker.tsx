@@ -10,12 +10,6 @@ export interface TickerEntry {
   href?: string;
 }
 
-const DOT_CLASS: Record<RiskLevel, string> = {
-  High: 'bg-risk-high',
-  Medium: 'bg-risk-medium',
-  Low: 'bg-risk-low',
-};
-
 interface NewsTickerProps {
   items: TickerEntry[];
   /** Seconds for one full loop of the list. Default 32s. */
@@ -41,11 +35,7 @@ export default function NewsTicker({
     <ul aria-hidden={ariaHidden || undefined} className="divide-y divide-line">
       {items.map((item) => (
         <li key={item.id} className="px-4 py-3">
-          <div className="flex items-center justify-between gap-2">
-            <span
-              className={`inline-block h-2 w-2 shrink-0 rounded-full ${DOT_CLASS[item.riskLevel]}`}
-              title={`${item.riskLevel} risk`}
-            />
+          <div className="flex items-center justify-end gap-2">
             {item.timestamp && (
               <span className="text-[11px] text-ink-faint">{item.timestamp}</span>
             )}

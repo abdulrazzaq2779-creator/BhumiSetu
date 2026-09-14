@@ -6,6 +6,7 @@ import {
   uniqueDistrictsFor,
   type MonitoredProject,
 } from '../data/projects';
+import PlotBreakdownSection from '../components/PlotBreakdownSection';
 
 const engine = createRuleEngine();
 
@@ -180,6 +181,10 @@ export default function DashboardPage() {
           </tbody>
         </table>
       </div>
+
+      {/* Feature 5 — parcel-level drill-down, added below the table.
+          Everything above this line is untouched. */}
+      <PlotBreakdownSection />
 
       <p className="mt-4 text-xs leading-relaxed text-ink-faint">
         Risk levels derive from the parcel scoring engine (Feature 1):

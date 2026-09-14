@@ -3,6 +3,7 @@ import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
 import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
+import BacktestPage from './pages/BacktestPage';
 import MapPage from './pages/MapPage';
 import StubPage from './pages/StubPage';
 import { useRoute } from './hooks/useRoute';
@@ -17,6 +18,7 @@ export default function App() {
       <main className="flex-1">
         {route === 'home' && <LandingPage />}
         {route === 'dashboard' && <DashboardPage />}
+        {route === 'backtest' && <BacktestPage />}
         {route === 'map' && <MapPage />}
         {route === 'reports' && (
           <StubPage

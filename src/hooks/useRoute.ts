@@ -5,9 +5,24 @@ import { useEffect, useState } from 'react';
  * without a server rewrite rule. Routes: '' (home) | 'dashboard' | 'reports'
  * | 'about' | 'faqs'.
  */
-export type Route = 'home' | 'dashboard' | 'map' | 'reports' | 'about' | 'faqs';
+export type Route =
+  | 'home'
+  | 'dashboard'
+  | 'map'
+  | 'reports'
+  | 'about'
+  | 'faqs'
+  | 'backtest';
 
-const ROUTES: Route[] = ['home', 'dashboard', 'map', 'reports', 'about', 'faqs'];
+const ROUTES: Route[] = [
+  'home',
+  'dashboard',
+  'map',
+  'reports',
+  'about',
+  'faqs',
+  'backtest',
+];
 
 function parseHash(): Route {
   const raw = window.location.hash.replace(/^#\/?/, '').split('?')[0];

@@ -1,4 +1,5 @@
 import { routeHref } from '../hooks/useRoute';
+import emblemUrl from '../assets/india-emblem.svg';
 import BhoomiSetuLogo from './BhoomiSetuLogo';
 
 const NAV: Array<{
@@ -17,6 +18,29 @@ export default function SiteHeader({ active }: { active: string }) {
     <header className="border-b border-line bg-surface">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4 sm:px-6 sm:py-5">
         <a href={routeHref('home')} className="flex items-center gap-3">
+          {/**
+           * National emblem block — State Emblem of India (Lion Capital of
+           * Ashoka) at the far left with "Government of India" stacked
+           * beneath it, matching official GoI portal conventions. Purely
+           * additive: the Bhoomi Setu brand block follows after a divider.
+           */}
+          <span className="flex shrink-0 flex-col items-center gap-1">
+            <img
+              src={emblemUrl}
+              alt="State Emblem of India"
+              className="h-8 w-auto sm:h-9"
+            />
+            <span className="whitespace-nowrap text-[10px] font-medium leading-none text-ink-soft">
+              Government of India
+            </span>
+          </span>
+
+          {/* Vertical divider between the national emblem and the portal brand */}
+          <span
+            aria-hidden="true"
+            className="h-9 w-px shrink-0 bg-line-strong sm:h-10"
+          />
+
           <BhoomiSetuLogo />
           <span className="leading-tight">
             <span className="block font-serif text-xl font-bold tracking-tight text-ink">

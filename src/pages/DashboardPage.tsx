@@ -7,6 +7,9 @@ import {
   type MonitoredProject,
 } from '../data/projects';
 import PlotBreakdownSection from '../components/PlotBreakdownSection';
+import ProjectCard, { type ProjectCardModel } from '../components/ProjectCard';
+import ProjectDetailModal from '../components/ProjectDetailModal';
+import { TILE_GRID } from '../components/PhotoTile';
 
 const engine = createRuleEngine();
 
@@ -36,6 +39,7 @@ function scoreAll(rows: MonitoredProject[]): ScoredRow[] {
 export default function DashboardPage() {
   const [state, setState] = useState('');
   const [district, setDistrict] = useState('');
+  const [selected, setSelected] = useState<ProjectCardModel | null>(null);
 
   const districts = useMemo(() => uniqueDistrictsFor(state), [state]);
 
@@ -121,66 +125,30 @@ export default function DashboardPage() {
         </ul>
       </div>
 
-      {/* Project risk table */}
-      <div className="mt-6 overflow-x-auto border border-line bg-surface">
-        <table className="w-full min-w-[760px] border-collapse text-sm">
-          <thead>
-            <tr className="border-b border-line bg-parchment-deep text-left text-xs tracking-wide text-ink-soft">
-              <th className="px-4 py-2.5 font-semibold">Risk</th>
-              <th className="px-4 py-2.5 font-semibold">Project</th>
-              <th className="px-4 py-2.5 font-semibold">District</th>
-              <th className="px-4 py-2.5 font-semibold">Stage</th>
-              <th className="px-4 py-2.5 font-semibold">Progress</th>
-              <th className="px-4 py-2.5 font-semibold">Primary driver</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map(({ project, score, level, topReason }) => (
-              <tr key={project.id} className="border-b border-line last:border-b-0">
-                <td className="px-4 py-3">
-                  <span
-                    className={`inline-block min-w-[4.5rem] border-l-4 px-2 py-1 text-center text-xs font-semibold ${LEVEL_CLASS[level]}`}
-                  >
-                    {level} · {score}
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  <span className="block font-medium text-ink">{project.name}</span>
-                  <span className="text-xs text-ink-faint">{project.id}</span>
-                </td>
-                <td className="px-4 py-3 text-ink-soft">
-                  {project.district}
-                  <span className="block text-xs text-ink-faint">{project.state}</span>
-                </td>
-                <td className="px-4 py-3 text-ink-soft">{project.stage}</td>
-                <td className="px-4 py-3">
-                  <span className="flex items-center gap-2">
-                    <span className="h-1.5 w-16 bg-parchment-deep">
-                      <span
-                        className="block h-full bg-ink-soft"
-                        style={{ width: `${project.progressPct}%` }}
-                      />
-                    </span>
-                    <span className="text-xs tabular-nums text-ink-soft">
-                      {project.progressPct}%
-                    </span>
-                  </span>
-                </td>
-                <td className="max-w-[16rem] px-4 py-3 text-[13px] text-ink-soft">
-                  {topReason}
-                </td>
-              </tr>
-            ))}
-            {rows.length === 0 && (
-              <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-ink-soft">
-                  No monitored projects match the selected filters.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      {/* Project risk grid — the Important Links tile pattern. Every scored
+          project renders as a card in the same score order; no pagination,
+          "load more", or slicing of the list. */}
+      <div className={`mt-6 ${TILE_GRID}`} data-testid="project-grid">
+        {rows.map(({ project, score, level, topReason }) => (
+          <ProjectCard
+            key={project.id}
+            project={{ ...project, score, level, primaryDriver: topReason }}
+            onOpen={setSelected}
+          />
+        ))}
+        {rows.length === 0 && (
+          <p className="border border-line bg-surface px-4 py-8 text-center text-ink-soft sm:col-span-2 lg:col-span-3">
+            No monitored projects match the selected filters.
+          </p>
+        )}
       </div>
+
+      {selected && (
+        <ProjectDetailModal
+          project={selected}
+          onClose={() => setSelected(null)}
+        />
+      )}
 
       {/* Feature 5 — parcel-level drill-down, added below the table.
           Everything above this line is untouched. */}

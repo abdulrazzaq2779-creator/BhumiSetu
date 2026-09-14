@@ -11,6 +11,18 @@
  */
 import type { PlotRiskInput, RiskLevel } from '../engine/types';
 
+/* Thematic hover photos for the dashboard cards (see CREDITS.md). */
+import thumbFarmlandA from '../assets/projects/farmland-a.jpg';
+import thumbFarmlandB from '../assets/projects/farmland-b.jpg';
+import thumbHighwayA from '../assets/projects/highway-a.jpg';
+import thumbHighwayB from '../assets/projects/highway-b.png';
+import thumbRiverA from '../assets/projects/river-a.jpg';
+import thumbRiverB from '../assets/projects/river-b.jpg';
+import thumbIndustrialA from '../assets/projects/industrial-a.jpg';
+import thumbIndustrialB from '../assets/projects/industrial-b.jpg';
+import thumbPortA from '../assets/projects/port-a.jpg';
+import thumbAirportA from '../assets/projects/airport-a.jpg';
+
 export interface MonitoredProject {
   id: string;
   name: string;
@@ -24,12 +36,15 @@ export interface MonitoredProject {
   lng: number;
   /** One-line status summary sourced from the PDF case. */
   summary: string;
+  /** Thematic photo revealed behind the dashboard card on hover (see CREDITS.md). */
+  thumbnailImage: string;
   riskInput: PlotRiskInput;
 }
 
 export const monitoredProjects: MonitoredProject[] = [
   {
     id: 'LAP-2023-014',
+    thumbnailImage: thumbFarmlandA,
     name: 'NIMZ Zaheerabad Industrial Smart City',
     district: 'Sangareddy',
     state: 'Telangana',
@@ -48,6 +63,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2021-006',
+    thumbnailImage: thumbHighwayB,
     name: 'Hyderabad Regional Ring Road (north)',
     district: 'Rangareddy',
     state: 'Telangana',
@@ -66,6 +82,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2022-031',
+    thumbnailImage: thumbRiverA,
     name: 'Musi Riverfront — Gandipet belt parcels',
     district: 'Hyderabad',
     state: 'Telangana',
@@ -84,6 +101,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2022-032',
+    thumbnailImage: thumbRiverB,
     name: 'Musi Riverfront — central stretch',
     district: 'Hyderabad',
     state: 'Telangana',
@@ -102,6 +120,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2020-009',
+    thumbnailImage: thumbIndustrialA,
     name: 'Polavaram Irrigation Project',
     district: 'West Godavari',
     state: 'Andhra Pradesh',
@@ -120,6 +139,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2022-018',
+    thumbnailImage: thumbHighwayA,
     name: 'Delhi–Mumbai Expressway — Gujarat packages',
     district: 'Vadodara',
     state: 'Gujarat',
@@ -138,6 +158,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-1998-002',
+    thumbnailImage: thumbFarmlandB,
     name: 'Bengaluru–Mysuru Infrastructure Corridor (NICE)',
     district: 'Bengaluru Urban',
     state: 'Karnataka',
@@ -156,6 +177,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2015-021',
+    thumbnailImage: thumbHighwayB,
     name: 'Bengaluru Metro Phases 1 & 2',
     district: 'Bengaluru Urban',
     state: 'Karnataka',
@@ -174,6 +196,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2023-007',
+    thumbnailImage: thumbPortA,
     name: 'Vadhavan Port connectivity',
     district: 'Palghar',
     state: 'Maharashtra',
@@ -192,6 +215,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2017-011',
+    thumbnailImage: thumbIndustrialB,
     name: 'Amaravati capital city (phase 2 pooling)',
     district: 'Guntur',
     state: 'Andhra Pradesh',
@@ -210,6 +234,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2019-014',
+    thumbnailImage: thumbFarmlandA,
     name: 'Sabari Rail Project',
     district: 'Palakkad',
     state: 'Kerala',
@@ -228,6 +253,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2024-005',
+    thumbnailImage: thumbIndustrialB,
     name: 'PM MITRA Park, Dhar',
     district: 'Dhar',
     state: 'Madhya Pradesh',
@@ -246,6 +272,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2023-022',
+    thumbnailImage: thumbAirportA,
     name: 'Mamnoor / Warangal Airport revival',
     district: 'Warangal',
     state: 'Telangana',
@@ -264,6 +291,7 @@ export const monitoredProjects: MonitoredProject[] = [
   },
   {
     id: 'LAP-2021-019',
+    thumbnailImage: thumbIndustrialA,
     name: 'Telangana irrigation projects (schemes cluster)',
     district: 'Adilabad',
     state: 'Telangana',

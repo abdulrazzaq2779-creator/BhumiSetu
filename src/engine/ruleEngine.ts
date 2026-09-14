@@ -177,11 +177,19 @@ export function createRuleEngine(
         .filter((c) => c.points > 0)
         .sort((a, b) => b.points - a.points);
 
+      // Per-factor point breakdown (same math as above, just exposed) so UI
+      // surfaces can draw contribution bars without duplicating scoring.
+      const factorPoints: Partial<Record<RiskDriverId, number>> = {};
+      for (const c of contributions) {
+        factorPoints[c.driver] = c.points;
+      }
+
       return {
         score,
         level,
         topDrivers: active.map((c) => c.driver),
         explanations: active.map((c) => c.explanation),
+        factorPoints,
       };
     },
   };

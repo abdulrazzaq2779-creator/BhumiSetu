@@ -22,7 +22,7 @@ export default function PlotBreakdownSection() {
       >
         <span>
           <span className="block font-serif text-base font-bold text-ink">
-            Parcel-level breakdown
+            Plot-level breakdown
           </span>
           <span className="text-xs text-ink-soft">
             The engine scores individual survey plots, not just projects —{' '}

@@ -6,10 +6,11 @@
  * name, project ID, district/state, stage, progress % and the primary
  * driver (unclamped — the card grows to fit long text). Hover/focus reveals
  * the project's thematic photo under a dark scrim; the whole card is the
- * button that opens the project detail dialog, so it is keyboard-focusable
- * and Enter-activatable by default.
+ * link to the project's detail page, so it is keyboard-focusable and
+ * Enter-activatable by default.
  */
 import type { RiskLevel } from '../engine/types';
+import { projectHref } from '../hooks/useRoute';
 import {
   TILE_CONTAINER,
   TILE_TEXT_FLIP,
@@ -24,7 +25,7 @@ const LEVEL_CLASS: Record<RiskLevel, string> = {
   Low: 'border-risk-low text-risk-low',
 };
 
-/** Everything a card (and the detail dialog) needs, pre-scored. */
+/** Everything a card (and the detail page) needs, pre-scored. */
 export interface ProjectCardModel {
   id: string;
   name: string;
@@ -41,16 +42,13 @@ export interface ProjectCardModel {
 
 export default function ProjectCard({
   project,
-  onOpen,
 }: {
   project: ProjectCardModel;
-  onOpen: (project: ProjectCardModel) => void;
 }) {
   return (
-    <button
-      type="button"
-      aria-haspopup="dialog"
-      onClick={() => onOpen(project)}
+    <a
+      href={projectHref(project.id)}
+      aria-label={`Open project details for ${project.name}`}
       className={`${TILE_CONTAINER} cursor-pointer text-left hover:border-line-strong focus-visible:border-line-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent motion-safe:transition-[border-color,transform] motion-safe:duration-300 motion-safe:hover:scale-[1.02] motion-safe:focus-visible:scale-[1.02]`}
     >
       <TilePhoto src={project.thumbnailImage} />
@@ -103,6 +101,6 @@ export default function ProjectCard({
       </span>
 
       <TileFooter />
-    </button>
+    </a>
   );
 }

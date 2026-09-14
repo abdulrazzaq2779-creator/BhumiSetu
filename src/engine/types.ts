@@ -57,6 +57,13 @@ export interface RiskPrediction {
    * first (Feature 3: "Explainability Output" — never show a bare number).
    */
   explanations: string[];
+
+  /**
+   * Per-factor point contributions to `score`, keyed by driver. Zero for
+   * inactive factors. Sums to `score` (same rounding). Additive: existing
+   * consumers that ignore it are unaffected.
+   */
+  factorPoints?: Partial<Record<RiskDriverId, number>>;
 }
 
 export type RiskLevel = 'Low' | 'Medium' | 'High';

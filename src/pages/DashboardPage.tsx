@@ -7,8 +7,7 @@ import {
   type MonitoredProject,
 } from '../data/projects';
 import PlotBreakdownSection from '../components/PlotBreakdownSection';
-import ProjectCard, { type ProjectCardModel } from '../components/ProjectCard';
-import ProjectDetailModal from '../components/ProjectDetailModal';
+import ProjectCard from '../components/ProjectCard';
 import { TILE_GRID } from '../components/PhotoTile';
 
 const engine = createRuleEngine();
@@ -39,7 +38,6 @@ function scoreAll(rows: MonitoredProject[]): ScoredRow[] {
 export default function DashboardPage() {
   const [state, setState] = useState('');
   const [district, setDistrict] = useState('');
-  const [selected, setSelected] = useState<ProjectCardModel | null>(null);
 
   const districts = useMemo(() => uniqueDistrictsFor(state), [state]);
 
@@ -73,9 +71,8 @@ export default function DashboardPage() {
           Risk Dashboard
         </h1>
         <p className="mt-1 max-w-3xl text-sm text-ink-soft">
-          All monitored land acquisition projects, ranked by parcel-level delay
-          risk. Scores refresh on each data cycle; select a project for the
-          full parcel breakdown.
+          All monitored land acquisition projects, ranked by delay risk. Scores
+          refresh on each data cycle; open a project for its full detail page.
         </p>
       </header>
 
@@ -133,7 +130,6 @@ export default function DashboardPage() {
           <ProjectCard
             key={project.id}
             project={{ ...project, score, level, primaryDriver: topReason }}
-            onOpen={setSelected}
           />
         ))}
         {rows.length === 0 && (
@@ -142,13 +138,6 @@ export default function DashboardPage() {
           </p>
         )}
       </div>
-
-      {selected && (
-        <ProjectDetailModal
-          project={selected}
-          onClose={() => setSelected(null)}
-        />
-      )}
 
       {/* Feature 5 — parcel-level drill-down, added below the table.
           Everything above this line is untouched. */}

@@ -1,19 +1,20 @@
-import { routeHref } from '../hooks/useRoute';
+import { routeHref, type Route } from '../hooks/useRoute';
 import emblemUrl from '../assets/india-emblem.svg';
 import BhoomiSetuLogo from './BhoomiSetuLogo';
 
 const NAV: Array<{
   label: string;
-  route: 'home' | 'about' | 'dashboard' | 'map' | 'reports';
+  route: 'home' | 'about' | 'dashboard' | 'map';
 }> = [
   { label: 'Home', route: 'home' },
   { label: 'About', route: 'about' },
-  { label: 'Dashboard', route: 'dashboard' },
+  // Relabelled from "Dashboard" — still routes to the project risk list
+  // ('dashboard' route); only the visible label changed.
+  { label: 'Reports', route: 'dashboard' },
   { label: 'Risk Map', route: 'map' },
-  { label: 'Reports', route: 'reports' },
 ];
 
-export default function SiteHeader({ active }: { active: string }) {
+export default function SiteHeader({ active }: { active: Route }) {
   return (
     <header className="border-b border-line bg-surface">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4 sm:px-6 sm:py-5">
@@ -57,7 +58,10 @@ export default function SiteHeader({ active }: { active: string }) {
           className="ml-auto flex flex-wrap items-center gap-x-2 gap-y-2 text-sm"
         >
           {NAV.map((item) => {
-            const isActive = item.route === active;
+            // Detail pages highlight nothing in the nav; the breadcrumb
+            // carries the location instead.
+            const isActive =
+              typeof active !== 'object' && item.route === active;
             return (
               <a
                 key={item.route}

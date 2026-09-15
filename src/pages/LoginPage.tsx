@@ -5,14 +5,118 @@
  *
  * Layout: two columns, mirroring the landing page's notice-board grid —
  * left, three contact info cards (the same helpline and support email the
- * TopBar and SiteFooter already show); right, the login form. Tokens match
- * the rest of the portal: parchment surfaces, hairline borders, terracotta
- * accent, serif headings.
+ * TopBar and SiteFooter already show); right, the login form with a
+ * canvas-drawn captcha gate. Tokens match the rest of the portal:
+ * parchment surfaces, hairline borders, terracotta accent, serif headings.
  */
-import { useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 
 const HELPLINE = '1800-111-957';
 const SUPPORT_EMAIL = 'help@bhumisetu.gov.in';
+
+const CAPTCHA_LENGTH = 6;
+/* Unambiguous alphabet — no 0/O/1/I/l so typed input can't fail on lookalikes. */
+const CAPTCHA_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+
+function randomCaptchaText(): string {
+  let out = '';
+  for (let i = 0; i < CAPTCHA_LENGTH; i++) {
+    out += CAPTCHA_ALPHABET[Math.floor(Math.random() * CAPTCHA_ALPHABET.length)];
+  }
+  return out;
+}
+
+/**
+ * Distorted-text captcha drawn on a canvas: per-glyph rotation and drift,
+ * strike-through noise lines and speckle dots. Parchment/ink palette to
+ * sit within the portal's tokens. Purely client-side demo — it gates the
+ * placeholder submit, nothing else.
+ */
+function CaptchaCanvas({ text }: { text: string }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const W = canvas.width;
+    const H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    // Parchment ground with a faint mottle.
+    ctx.fillStyle = '#f4efe4';
+    ctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < 40; i++) {
+      ctx.fillStyle = `rgba(60, 54, 46, ${0.02 + Math.random() * 0.04})`;
+      ctx.beginPath();
+      ctx.arc(Math.random() * W, Math.random() * H, 1 + Math.random() * 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Noise: two crossing strokes + speckle dots.
+    ctx.strokeStyle = 'rgba(60, 54, 46, 0.25)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 2; i++) {
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * W, Math.random() * H);
+      ctx.bezierCurveTo(
+        Math.random() * W, Math.random() * H,
+        Math.random() * W, Math.random() * H,
+        Math.random() * W, Math.random() * H,
+      );
+      ctx.stroke();
+    }
+    for (let i = 0; i < 60; i++) {
+      ctx.fillStyle = `rgba(60, 54, 46, ${0.1 + Math.random() * 0.2})`;
+      ctx.fillRect(Math.random() * W, Math.random() * H, 1.5, 1.5);
+    }
+
+    // Glyphs: staggered, each slightly rotated and baseline-shifted.
+    const slot = W / (CAPTCHA_LENGTH + 1);
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      ctx.save();
+      ctx.translate(slot * (i + 1) + (Math.random() * 6 - 3), H / 2 + (Math.random() * 8 - 4));
+      ctx.rotate((Math.random() - 0.5) * 0.5); // ±~14°
+      ctx.font = '600 26px Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#3c362e';
+      ctx.fillText(ch, 0, 0);
+      ctx.restore();
+    }
+  }, [text]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={168}
+      height={48}
+      aria-label={`Captcha image containing ${CAPTCHA_LENGTH} characters`}
+      className="border border-line-strong bg-parchment"
+    />
+  );
+}
+
+/** Square refresh button with a circular-arrow icon. */
+function RefreshButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label="Regenerate captcha"
+      title="New captcha"
+      className="flex h-[50px] w-[50px] shrink-0 items-center justify-center border border-line-strong bg-surface text-ink-soft transition-colors hover:border-accent hover:text-accent"
+    >
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M20 11a8 8 0 1 0-2.3 6.3" />
+        <path d="M20 5v6h-6" />
+      </svg>
+    </button>
+  );
+}
 
 function InfoCard({
   icon,
@@ -40,6 +144,15 @@ function InfoCard({
 
 export default function LoginPage() {
   const [notice, setNotice] = useState<string | null>(null);
+  const [captchaText, setCaptchaText] = useState(randomCaptchaText);
+  const [captchaInput, setCaptchaInput] = useState('');
+  const [captchaError, setCaptchaError] = useState<string | null>(null);
+
+  const regenerateCaptcha = useCallback(() => {
+    setCaptchaText(randomCaptchaText());
+    setCaptchaInput('');
+    setCaptchaError(null);
+  }, []);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -119,6 +232,15 @@ export default function LoginPage() {
           className="border border-line bg-surface p-6 sm:p-8"
           onSubmit={(e) => {
             e.preventDefault();
+            // Captcha gate: exact match (case-insensitive) required before
+            // the demo notice shows. Still no real authentication.
+            if (captchaInput.trim().toLowerCase() !== captchaText.toLowerCase()) {
+              setCaptchaError('Captcha does not match');
+              setCaptchaText(randomCaptchaText());
+              setCaptchaInput('');
+              return;
+            }
+            setCaptchaError(null);
             setNotice(
               'Login is disabled in this demo — contact your administrator for access.',
             );
@@ -169,6 +291,45 @@ export default function LoginPage() {
             >
               Forgot password?
             </button>
+          </div>
+
+          {/* Captcha gate — sits between the remember/forgot row and the
+              submit button. Error shows inline on mismatch. */}
+          <div className="mt-6">
+            <span className="block text-xs font-medium text-ink-soft">
+              Captcha — type the characters shown
+            </span>
+            <div className="mt-1 flex items-center gap-2">
+              <CaptchaCanvas text={captchaText} />
+              <RefreshButton onClick={regenerateCaptcha} />
+              <input
+                id="login-captcha"
+                name="captcha"
+                type="text"
+                required
+                autoComplete="off"
+                spellCheck={false}
+                value={captchaInput}
+                onChange={(e) => {
+                  setCaptchaInput(e.target.value);
+                  setCaptchaError(null);
+                }}
+                aria-invalid={captchaError !== null}
+                aria-describedby={captchaError ? 'login-captcha-error' : undefined}
+                placeholder={`${CAPTCHA_LENGTH} characters`}
+                maxLength={CAPTCHA_LENGTH + 2}
+                className="min-w-0 flex-1 border border-line-strong bg-parchment px-2.5 py-2 text-sm tracking-widest text-ink focus:border-accent focus:outline-none"
+              />
+            </div>
+            {captchaError && (
+              <p
+                id="login-captcha-error"
+                role="alert"
+                className="mt-2 border-l-4 border-risk-medium bg-parchment px-3 py-2 text-sm text-ink"
+              >
+                {captchaError}
+              </p>
+            )}
           </div>
 
           <button

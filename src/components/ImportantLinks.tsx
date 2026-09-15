@@ -92,7 +92,9 @@ interface Tile {
 
 const TILES: Tile[] = [
   {
-    title: 'Risk Dashboard',
+    // Relabelled from "Risk Dashboard" — route, icon, hover image and grid
+    // position unchanged; only the visible label text differs.
+    title: 'Dashboard',
     subtitle: 'Colour-coded risk across all monitored projects',
     icon: 'dashboard',
     route: 'dashboard',
@@ -116,7 +118,8 @@ const TILES: Tile[] = [
     title: 'Compensation Tracker',
     subtitle: 'Offers vs. market rate, disbursement progress',
     icon: 'rupee',
-    route: 'dashboard',
+    // Now routes to the compensation calculator (previously the dashboard).
+    route: 'compensation-calculator',
     hoverImage: { src: tileCompensation },
   },
   {
@@ -130,7 +133,8 @@ const TILES: Tile[] = [
     title: 'Grievance Redressal',
     subtitle: 'File and track landowner grievances online',
     icon: 'grievance',
-    route: 'faqs',
+    // Now routes to the dedicated grievance page (previously FAQs).
+    route: 'grievance',
     hoverImage: { src: tileGrievance },
   },
 ];

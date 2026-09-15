@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 /**
  * Minimal hash routing — keeps the portal servable from any static path
  * without a server rewrite rule. Routes: '' (home) | 'dashboard' | 'reports'
- * | 'about' | 'faqs' | 'backtest' | 'projects/:projectId'.
+ * | 'about' | 'faqs' | 'backtest' | 'projects/:projectId' | 'login'
+ * | 'compensation-calculator' | 'grievance'.
  */
 export type Route =
   | 'home'
@@ -14,6 +15,8 @@ export type Route =
   | 'faqs'
   | 'backtest'
   | 'login'
+  | 'compensation-calculator'
+  | 'grievance'
   | { project: string };
 
 const ROUTES: Route[] = [
@@ -25,6 +28,8 @@ const ROUTES: Route[] = [
   'faqs',
   'backtest',
   'login',
+  'compensation-calculator',
+  'grievance',
 ];
 
 function parseHash(): Route {

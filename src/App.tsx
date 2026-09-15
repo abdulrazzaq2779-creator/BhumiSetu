@@ -8,6 +8,9 @@ import BacktestPage from './pages/BacktestPage';
 import MapPage from './pages/MapPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
 import LoginPage from './pages/LoginPage';
+import CompensationCalculatorPage from './pages/CompensationCalculatorPage';
+import FaqsPage from './pages/FaqsPage';
+import GrievancePage from './pages/GrievancePage';
 import StubPage from './pages/StubPage';
 import { useRoute } from './hooks/useRoute';
 
@@ -29,6 +32,8 @@ export default function App() {
             {route === 'backtest' && <BacktestPage />}
             {route === 'map' && <MapPage />}
             {route === 'login' && <LoginPage />}
+            {route === 'compensation-calculator' && <CompensationCalculatorPage />}
+            {route === 'grievance' && <GrievancePage />}
             {route === 'reports' && (
               <StubPage
                 title="District Reports"
@@ -36,12 +41,7 @@ export default function App() {
               />
             )}
             {route === 'about' && <AboutPage />}
-            {route === 'faqs' && (
-              <StubPage
-                title="Frequently Asked Questions"
-                note="Answers for acquiring bodies, district administrations and project-affected families — including grievance filing steps."
-              />
-            )}
+            {route === 'faqs' && <FaqsPage />}
           </>
         )}
       </main>

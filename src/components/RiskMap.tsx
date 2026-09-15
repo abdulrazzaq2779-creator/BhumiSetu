@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import {
   Map as MapLibreMap,
   NavigationControl,
@@ -7,6 +8,7 @@ import {
   type MapGeoJSONFeature,
   type MapLayerMouseEvent,
   type StyleSpecification,
+  type FilterSpecification,
 } from 'maplibre-gl';
 import { INDIA_CENTER, mapPoints, type MapPoint } from '../data/mapPoints';
 import type { RiskLevel } from '../engine/types';
@@ -89,14 +91,21 @@ export function popupHTML(point: MapPoint): string {
 interface RiskMapProps {
   /** MapTiler key; falls back to keyless OSM raster tiles when absent. */
   apiKey?: string;
+  /** Risk levels currently shown — absent levels' pins are hidden. */
+  visibleLevels?: RiskLevel[];
+  /** When it changes, the map flies to that project and opens its popup. */
+  focusId?: string | null;
 }
 
 export default function RiskMap({
   apiKey = import.meta.env.VITE_MAPTILER_KEY,
+  visibleLevels,
+  focusId = null,
 }: RiskMapProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const popupRef = useRef<Popup | null>(null);
+  const loadedRef = useRef(false);
   const [failed, setFailed] = useState(false);
 
   const geojson = useMemo(() => buildGeoJSON(mapPoints), []);
@@ -140,6 +149,7 @@ export default function RiskMap({
     map.on('error', onStyleError);
 
     map.on('load', () => {
+      loadedRef.current = true;
       map.addSource('projects', { type: 'geojson', data: geojson });
       map.addLayer({
         id: 'project-pins',
@@ -171,12 +181,37 @@ export default function RiskMap({
     });
 
     return () => {
+      loadedRef.current = false;
       popup.remove();
       map.remove();
       mapRef.current = null;
       popupRef.current = null;
     };
   }, [apiKey, geojson]);
+
+  // Level filter → layer filter, live. Skipped until the style has loaded.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !loadedRef.current || !visibleLevels) return;
+    if (map.getLayer('project-pins')) {
+      map.setFilter('project-pins', [
+        ['in', ['get', 'riskLevel'], ['literal', visibleLevels]],
+      ] as unknown as FilterSpecification);
+    }
+  }, [visibleLevels]);
+
+  // focusId change → fly to the project and open its popup.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !loadedRef.current || focusId === null) return;
+    const point = mapPoints.find((p) => p.id === focusId);
+    if (!point) return;
+    map.flyTo({ center: [point.lng, point.lat], zoom: 8, speed: 1.4 });
+    popupRef.current
+      ?.setLngLat([point.lng, point.lat])
+      .setHTML(popupHTML(point))
+      .addTo(map);
+  }, [focusId]);
 
   const showFallback = failed;
 

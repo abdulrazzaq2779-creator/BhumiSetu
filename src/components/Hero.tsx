@@ -1,4 +1,5 @@
 import { monitoredProjects } from '../data/projects';
+import { useCountUp } from '../hooks/useReveal';
 import { routeHref } from '../hooks/useRoute';
 import HeroCarousel, { type HeroSlide } from './HeroCarousel';
 import heroFarmland from '../assets/hero-farmland.jpg';
@@ -32,6 +33,7 @@ const HERO_SLIDES: HeroSlide[] = [
  */
 export default function Hero() {
   const monitored = monitoredProjects.length;
+  const countRef = useCountUp<HTMLSpanElement>(monitored);
 
   return (
     <section className="relative isolate overflow-hidden bg-ink">
@@ -50,7 +52,8 @@ export default function Hero() {
               Land Acquisition Risk Monitoring · National Overview
             </p>
             <p className="mt-3 font-serif text-5xl font-bold leading-none text-parchment sm:text-6xl">
-              {monitored} Projects Monitored
+              <span ref={countRef.ref} className="tabular-nums">{countRef.value}</span>{' '}
+              Projects Monitored
             </p>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-parchment/85 sm:text-lg">
               Bhoomi Setu continuously scores every monitored acquisition at the
@@ -62,7 +65,7 @@ export default function Hero() {
                 href={routeHref('dashboard')}
                 className="border border-parchment bg-parchment px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-parchment-deep"
               >
-                Open Risk Dashboard
+                Open Reports
               </a>
               <a
                 href={routeHref('about')}

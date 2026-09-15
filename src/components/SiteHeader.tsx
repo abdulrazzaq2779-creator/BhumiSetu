@@ -1,4 +1,5 @@
 import { routeHref, type Route } from '../hooks/useRoute';
+import { useOptionalUser, homeForRole } from '../../portal-kit/src';
 import emblemUrl from '../assets/india-emblem.svg';
 import BhoomiSetuLogo from './BhoomiSetuLogo';
 
@@ -15,6 +16,11 @@ const NAV: Array<{
 ];
 
 export default function SiteHeader({ active }: { active: Route }) {
+  // Session comes from the portal store (mounted at App level), so the
+  // Login button becomes "My Portal" once a user signs in — public pages
+  // still render this same header.
+  const user = useOptionalUser();
+
   return (
     <header className="border-b border-line bg-surface">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4 sm:px-6 sm:py-5">
@@ -78,10 +84,10 @@ export default function SiteHeader({ active }: { active: Route }) {
             );
           })}
           <a
-            href={routeHref('login')}
+            href={user ? homeForRole(user.role) : routeHref('login')}
             className="ml-4 border border-accent bg-accent px-5 py-1.5 text-sm font-semibold text-parchment transition-colors hover:bg-accent-deep"
           >
-            Login
+            {user ? 'My Portal' : 'Login'}
           </a>
         </nav>
       </div>

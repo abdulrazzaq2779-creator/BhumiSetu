@@ -1,13 +1,13 @@
 import BhoomiSetuLogo from './BhoomiSetuLogo';
 
 const QUICK_LINKS = [
-  { label: 'Risk Dashboard', href: '#/dashboard' },
+  { label: 'Reports', href: '#/dashboard' },
   { label: 'Risk Map', href: '#/map' },
   { label: 'District Reports', href: '#/reports' },
   { label: 'About the Platform', href: '#/about' },
   { label: 'FAQs', href: '#/faqs' },
   { label: 'Grievance Redressal', href: '#/faqs' },
-  { label: 'Login', href: '#/dashboard' },
+  { label: 'Login', href: '#/login' },
 ];
 
 const ACTS_AND_RULES = [

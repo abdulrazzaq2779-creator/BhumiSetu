@@ -25,6 +25,70 @@ const RURAL_MULTIPLIERS = [1, 1.25, 1.5, 1.75, 2] as const;
 const inputClass =
   'mt-1 block w-full border border-line-strong bg-parchment px-2.5 py-1.5 text-sm text-ink focus:border-accent focus:outline-none';
 
+/**
+ * Slider + number combo: drag for coarse control, type for precision.
+ * The live value chip sits in the label row so the number is always
+ * visible without hunting for a tooltip.
+ */
+function SliderField({
+  label,
+  value,
+  min,
+  max,
+  step,
+  onChange,
+  format,
+  hint,
+}: {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (next: number) => void;
+  format: (v: number) => string;
+  hint?: string;
+}) {
+  return (
+    <label className="block text-xs font-medium text-ink-soft">
+      <span className="flex items-baseline justify-between gap-3">
+        {label}
+        <span className="border border-line-strong bg-parchment px-2 py-0.5 font-serif text-sm font-bold tabular-nums text-ink">
+          {format(value)}
+        </span>
+      </span>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="mt-2 w-full accent-accent"
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-valuenow={value}
+        aria-valuetext={format(value)}
+      />
+      <span className="mt-1 flex items-center gap-2">
+        <input
+          type="number"
+          min={min}
+          step={1}
+          value={value}
+          onChange={(e) => onChange(Math.max(0, Number(e.target.value) || 0))}
+          className="w-32 border border-line-strong bg-parchment px-2 py-1 text-xs tabular-nums text-ink focus:border-accent focus:outline-none"
+          aria-label={`${label} — exact value`}
+        />
+        <span className="text-[10px] text-ink-faint">
+          slider range {format(min)} – {format(max)}
+        </span>
+      </span>
+      {hint && <span className="mt-1 block text-[11px] font-normal text-ink-faint">{hint}</span>}
+    </label>
+  );
+}
+
 function Field({
   label,
   hint,
@@ -96,6 +160,11 @@ export default function CompensationCalculatorPage() {
     const marketEquivalent = withSolatium(gross(market));
     const gapPct = offered > 0 ? ((marketEquivalent - offered) / offered) * 100 : 0;
 
+    // Breakdown of the offered figure — each statutory layer's share.
+    const baseValue = area * circle;
+    const multiplierAddition = baseValue * (multiplier - 1);
+    const solatiumAddition = gross(circle) * (solatium / 100);
+
     // Reuse the real risk engine: how many compensation-gap points a plot
     // with this gap would earn (saturating scale, 20-point weight).
     const compGapPoints = engine.predict({
@@ -106,7 +175,16 @@ export default function CompensationCalculatorPage() {
       rrFamiliesAwaitingResettlement: 0,
     }).factorPoints?.compensation_gap ?? 0;
 
-    return { offered, marketEquivalent, gapPct, compGapPoints, multiplier };
+    return {
+      offered,
+      marketEquivalent,
+      gapPct,
+      compGapPoints,
+      multiplier,
+      baseValue,
+      multiplierAddition,
+      solatiumAddition,
+    };
   }, [areaAcres, circleRate, marketRate, landType, areaClass, ruralMultiplier, solatiumPct]);
 
   const maxAmount = Math.max(calc.offered, calc.marketEquivalent);
@@ -163,32 +241,26 @@ export default function CompensationCalculatorPage() {
                 <option>Assigned</option>
               </select>
             </Field>
-            <Field
+            <SliderField
               label="Circle rate (₹ / acre)"
+              value={Number(circleRate) || 0}
+              min={0}
+              max={5_000_000}
+              step={50_000}
+              onChange={(n) => setCircleRate(String(n))}
+              format={(v) => inr(v)}
               hint="Government-assessed rate used in offers."
-            >
-              <input
-                type="number"
-                min="0"
-                step="1000"
-                value={circleRate}
-                onChange={(e) => setCircleRate(e.target.value)}
-                className={inputClass}
-              />
-            </Field>
-            <Field
+            />
+            <SliderField
               label="Market rate (₹ / acre)"
+              value={Number(marketRate) || 0}
+              min={0}
+              max={5_000_000}
+              step={50_000}
+              onChange={(n) => setMarketRate(String(n))}
+              format={(v) => inr(v)}
               hint="Prevailing local rate, for comparison."
-            >
-              <input
-                type="number"
-                min="0"
-                step="1000"
-                value={marketRate}
-                onChange={(e) => setMarketRate(e.target.value)}
-                className={inputClass}
-              />
-            </Field>
+            />
             <Field label="Area classification">
               <select
                 value={areaClass}
@@ -237,9 +309,13 @@ export default function CompensationCalculatorPage() {
           {landType === 'Assigned' && (
             <p className="mt-4 text-[11px] leading-relaxed text-ink-faint">
               Note: compensation parity for assigned land is a recurring
-              dispute — see the NIMZ Zaheerabad case on the risk dashboard.
+              dispute — see the NIMZ Zaheerabad case on the Reports page.
             </p>
           )}
+          <p className="mt-5 text-[11px] leading-relaxed text-ink-faint">
+            Drag a slider for quick exploration, or type an exact figure in
+            the box beneath it.
+          </p>
         </form>
 
         {/* Right — the live result and the offer-vs-market gap. */}
@@ -271,13 +347,64 @@ export default function CompensationCalculatorPage() {
               />
             </div>
 
+            {/* Stacked composition of the offered figure: land value →
+                statutory multiplier → solatium, in one proportional bar. */}
+            <div className="mt-6" aria-label="Composition of the offered amount">
+              <p className="text-xs font-medium text-ink-soft">
+                How the offered figure is built up
+              </p>
+              <div className="mt-2 flex h-4 w-full overflow-hidden border border-line">
+                <div
+                  className="h-full bg-ink transition-[width] duration-500 ease-out"
+                  style={{ width: `${(calc.baseValue / calc.offered) * 100}%` }}
+                  title={`Land value: ${inr(calc.baseValue)}`}
+                />
+                <div
+                  className="h-full bg-ink/55 transition-[width] duration-500 ease-out"
+                  style={{ width: `${(calc.multiplierAddition / calc.offered) * 100}%` }}
+                  title={`Multiplier addition: ${inr(calc.multiplierAddition)}`}
+                />
+                <div
+                  className="h-full bg-accent transition-[width] duration-500 ease-out"
+                  style={{ width: `${(calc.solatiumAddition / calc.offered) * 100}%` }}
+                  title={`Solatium: ${inr(calc.solatiumAddition)}`}
+                />
+              </div>
+              <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-ink-soft">
+                <li className="flex items-center gap-1.5">
+                  <span className="inline-block h-2.5 w-2.5 bg-ink" /> Land value ·{' '}
+                  {inr(calc.baseValue)}
+                </li>
+                <li className="flex items-center gap-1.5">
+                  <span className="inline-block h-2.5 w-2.5 bg-ink/55" /> ×
+                  {calc.multiplier} multiplier · {inr(calc.multiplierAddition)}
+                </li>
+                <li className="flex items-center gap-1.5">
+                  <span className="inline-block h-2.5 w-2.5 bg-accent" /> Solatium ·{' '}
+                  {inr(calc.solatiumAddition)}
+                </li>
+              </ul>
+            </div>
+
             <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
               <p className="text-sm text-ink-soft">
                 Gap between offer and market equivalent
               </p>
-              <p className="border border-accent bg-parchment px-2.5 py-1 font-serif text-lg font-bold text-accent">
-                {calc.gapPct > 0 ? `+${calc.gapPct.toFixed(1)}%` : '0%'}
-              </p>
+              <div className="flex items-center gap-3">
+                <p
+                  className="border border-accent bg-parchment px-2.5 py-1 font-serif text-lg font-bold text-accent"
+                  aria-live="polite"
+                >
+                  {calc.gapPct > 0 ? `+${calc.gapPct.toFixed(1)}%` : '0%'}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="border border-line-strong px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-parchment-deep"
+                >
+                  Print / Save PDF
+                </button>
+              </div>
             </div>
           </div>
 
@@ -289,7 +416,7 @@ export default function CompensationCalculatorPage() {
                 {calc.compGapPoints.toFixed(1)} points
               </span>{' '}
               toward a plot's risk score — the same factor driving many High
-              risk flags on the dashboard.
+              risk flags on the Reports grid.
             </p>
           </div>
         </div>

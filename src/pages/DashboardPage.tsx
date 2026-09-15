@@ -26,6 +26,15 @@ const LEVEL_CLASS: Record<RiskLevel, string> = {
   Low: 'border-risk-low text-risk-low',
 };
 
+type RiskFilter = 'All' | RiskLevel;
+type SortKey = 'risk' | 'progress' | 'name';
+
+const SORT_LABELS: Array<{ key: SortKey; label: string }> = [
+  { key: 'risk', label: 'Risk (high → low)' },
+  { key: 'progress', label: 'Progress (least → most)' },
+  { key: 'name', label: 'Name (A → Z)' },
+];
+
 /** Risk queue: the score, the level, and the one-line "why". */
 function scoreAll(rows: MonitoredProject[]): ScoredRow[] {
   return rows
@@ -45,10 +54,13 @@ function scoreAll(rows: MonitoredProject[]): ScoredRow[] {
 export default function DashboardPage() {
   const [state, setState] = useState('');
   const [district, setDistrict] = useState('');
+  const [query, setQuery] = useState('');
+  const [riskFilter, setRiskFilter] = useState<RiskFilter>('All');
+  const [sortKey, setSortKey] = useState<SortKey>('risk');
 
   const districts = useMemo(() => uniqueDistrictsFor(state), [state]);
 
-  const rows = useMemo(
+  const scored = useMemo(
     () =>
       scoreAll(
         monitoredProjects.filter(
@@ -60,10 +72,33 @@ export default function DashboardPage() {
     [state, district],
   );
 
+  // Free-text + risk-level filtering, then the chosen sort. Runs on the
+  // already-scored list so the engine never re-runs for keystrokes.
+  const rows = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const filtered = scored.filter(
+      ({ project, level }) =>
+        (riskFilter === 'All' || level === riskFilter) &&
+        (q === '' ||
+          project.name.toLowerCase().includes(q) ||
+          project.id.toLowerCase().includes(q) ||
+          project.district.toLowerCase().includes(q) ||
+          project.state.toLowerCase().includes(q)),
+    );
+    switch (sortKey) {
+      case 'progress':
+        return [...filtered].sort((a, b) => a.project.progressPct - b.project.progressPct);
+      case 'name':
+        return [...filtered].sort((a, b) => a.project.name.localeCompare(b.project.name));
+      default:
+        return filtered; // scoreAll already returns risk-descending order
+    }
+  }, [scored, query, riskFilter, sortKey]);
+
   const counts = {
-    High: rows.filter((r) => r.level === 'High').length,
-    Medium: rows.filter((r) => r.level === 'Medium').length,
-    Low: rows.filter((r) => r.level === 'Low').length,
+    High: scored.filter((r) => r.level === 'High').length,
+    Medium: scored.filter((r) => r.level === 'Medium').length,
+    Low: scored.filter((r) => r.level === 'Low').length,
   };
 
   const onStateChange = (next: string) => {
@@ -71,11 +106,13 @@ export default function DashboardPage() {
     setDistrict(''); // district list is state-scoped, so reset it
   };
 
+  const filterChips: RiskFilter[] = ['All', 'High', 'Medium', 'Low'];
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <header className="border-b border-line pb-5">
         <h1 className="font-serif text-3xl font-bold tracking-tight text-ink">
-          Risk Dashboard
+          Reports
         </h1>
         <p className="mt-1 max-w-3xl text-sm text-ink-soft">
           All monitored land acquisition projects, ranked by delay risk. Scores
@@ -83,9 +120,20 @@ export default function DashboardPage() {
         </p>
       </header>
 
-      {/* Filters + risk legend, on one hairline band. */}
+      {/* Filters + risk legend, on one hairline band. The level legend
+          doubles as clickable filter chips. */}
       <div className="mt-6 flex flex-wrap items-end justify-between gap-4 border border-line bg-surface p-4">
         <div className="flex flex-wrap gap-4">
+          <label className="block text-xs font-medium text-ink-soft">
+            Search
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Project, ID, district…"
+              className="mt-1 block w-52 border border-line-strong bg-parchment px-2.5 py-1.5 text-sm text-ink focus:border-accent focus:outline-none"
+            />
+          </label>
           <label className="block text-xs font-medium text-ink-soft">
             State / UT
             <select
@@ -117,16 +165,70 @@ export default function DashboardPage() {
               ))}
             </select>
           </label>
+          <label className="block text-xs font-medium text-ink-soft">
+            Sort by
+            <select
+              value={sortKey}
+              onChange={(e) => setSortKey(e.target.value as SortKey)}
+              className="mt-1 block w-52 border border-line-strong bg-parchment px-2.5 py-1.5 text-sm text-ink focus:border-accent focus:outline-none"
+            >
+              {SORT_LABELS.map((s) => (
+                <option key={s.key} value={s.key}>
+                  {s.label}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
 
-        <ul className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-soft">
-          {(['High', 'Medium', 'Low'] as const).map((lv) => (
-            <li key={lv} className="flex items-center gap-1.5">
-              <span className={`inline-block h-2.5 w-2.5 border ${LEVEL_CLASS[lv]} bg-current`} />
-              {lv} risk · {counts[lv]}
-            </li>
-          ))}
+        {/* Risk legend → interactive filter chips (buttons with aria-pressed). */}
+        <ul className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-soft" aria-label="Filter by risk level">
+          {filterChips.map((lv) => {
+            const active = riskFilter === lv;
+            const count = lv === 'All' ? scored.length : counts[lv];
+            return (
+              <li key={lv}>
+                <button
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setRiskFilter(active ? 'All' : lv)}
+                  className={`flex items-center gap-1.5 border px-2 py-1 transition-colors ${
+                    active
+                      ? 'border-ink bg-ink text-parchment'
+                      : 'border-transparent hover:border-line-strong'
+                  }`}
+                >
+                  {lv !== 'All' && (
+                    <span className={`inline-block h-2.5 w-2.5 border ${LEVEL_CLASS[lv]} bg-current`} />
+                  )}
+                  {lv} · {count}
+                </button>
+              </li>
+            );
+          })}
         </ul>
+      </div>
+
+      {/* Result count — announces filter outcome, clears in one click. */}
+      <div className="mt-4 flex items-center justify-between text-xs text-ink-soft" aria-live="polite">
+        <p>
+          Showing <span className="font-semibold text-ink">{rows.length}</span> of{' '}
+          {scored.length} monitored projects
+        </p>
+        {(query !== '' || riskFilter !== 'All' || state !== '' || district !== '') && (
+          <button
+            type="button"
+            onClick={() => {
+              setQuery('');
+              setRiskFilter('All');
+              setState('');
+              setDistrict('');
+            }}
+            className="font-medium text-accent hover:underline"
+          >
+            Clear all filters
+          </button>
+        )}
       </div>
 
       {/* Project risk grid — the Important Links tile pattern. Every scored
@@ -140,9 +242,23 @@ export default function DashboardPage() {
           />
         ))}
         {rows.length === 0 && (
-          <p className="border border-line bg-surface px-4 py-8 text-center text-ink-soft sm:col-span-2 lg:col-span-3">
-            No monitored projects match the selected filters.
-          </p>
+          <div className="border border-line bg-surface px-4 py-10 text-center sm:col-span-2 lg:col-span-3">
+            <p className="text-sm text-ink-soft">
+              No monitored projects match the selected filters.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setQuery('');
+                setRiskFilter('All');
+                setState('');
+                setDistrict('');
+              }}
+              className="mt-3 border border-accent bg-accent px-4 py-1.5 text-sm font-semibold text-parchment hover:bg-accent-deep"
+            >
+              Reset filters
+            </button>
+          </div>
         )}
       </div>
 

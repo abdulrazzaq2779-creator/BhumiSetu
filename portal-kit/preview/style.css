@@ -1,0 +1,13 @@
+/*
+ * Preview stylesheet.
+ *
+ * Re-exports the host stylesheet unchanged (design tokens, base layer,
+ * animations, MapLibre popup styles) and tells Tailwind to scan both the
+ * host sources and the kit sources. The extra @source lines are needed
+ * because this preview's Vite root is portal-kit/preview — Tailwind's
+ * automatic detection would otherwise only see this folder.
+ */
+@import '../../src/index.css';
+
+@source '../../src';
+@source '../src';

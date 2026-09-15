@@ -1,0 +1,76 @@
+[2m10:04:43 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Re-optimizing dependencies because vite config has changed
+
+  [32m[1mVITE[22m v6.4.3[39m  [2mready in [0m[1m1766[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5175[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m10:43:54 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/src/components/SiteHeader.tsx, /style.css[22m
+[2m10:44:34 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/App.tsx[22m
+[2m10:44:53 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/router.tsx, /style.css[22m
+[2m10:44:53 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/src/components/SiteFooter.tsx, /style.css[22m
+[2m10:49:45 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/router.tsx, /style.css[22m
+[2m10:49:45 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/PortalStore.tsx, /style.css[22m
+[2m10:49:45 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/components/ToastStack.tsx, /style.css[22m
+[2m10:49:45 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/router.tsx[22m Could not Fast Refresh (new export)
+[2m10:49:45 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/main.tsx, /style.css[22m
+[2m10:49:45 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/main.tsx[22m Could not Fast Refresh ("true" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m10:49:45 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/style.css[22m
+[2m10:49:49 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/index.ts[22m
+[2m10:49:49 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/App.tsx[22m
+[2m10:49:59 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/App.tsx[22m
+[2m10:50:11 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/App.tsx[22m
+[2m10:50:23 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/src/components/SiteHeader.tsx, /style.css[22m
+[2m10:50:23 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/src/components/SiteHeader.tsx, /style.css[22m
+[2m10:50:30 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/src/components/SiteHeader.tsx, /style.css[22m
+[2m10:51:09 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/style.css[22m
+[2m10:51:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/style.css[22m
+[2m10:59:04 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/style.css[22m
+[2m10:59:58 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/Hero.tsx[22m
+[2m11:00:31 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/DashboardPage.tsx[22m
+[2m11:01:09 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/LandingPage.tsx[22m
+[2m11:01:13 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/LandingPage.tsx[22m
+[2m11:01:54 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/RiskMap.tsx[22m
+[2m11:02:05 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/RiskMap.tsx[22m
+[2m11:02:42 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/MapPage.tsx[22m
+[2m11:02:59 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/MapPage.tsx[22m
+[2m11:03:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/style.css[22m
+[2m11:03:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/RiskMap.tsx[22m
+[2m11:03:51 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/CompensationCalculatorPage.tsx[22m
+[2m11:04:03 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/CompensationCalculatorPage.tsx[22m
+[2m11:04:18 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/CompensationCalculatorPage.tsx[22m
+[2m11:04:37 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/CompensationCalculatorPage.tsx[22m
+[2m11:05:03 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/src/components/TopBar.tsx, /style.css[22m
+[2m11:05:03 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/OfficialAlertsPage.tsx, /style.css[22m
+[2m11:05:23 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/CompensationCalculatorPage.tsx[22m
+[2m11:15:37 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/style.css[22m
+[2m11:15:57 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/App.tsx[22m
+[2m11:16:03 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/App.tsx[22m
+[2m11:17:24 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/style.css[22m
+[2m11:17:25 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/Hero.tsx[22m
+[2m11:18:01 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/LandingPage.tsx[22m
+[2m11:18:16 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/src/components/TopBar.tsx, /style.css[22m
+[2m11:18:37 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/OfficialAlertsPage.tsx, /style.css[22m
+[2m11:18:49 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/OfficialAlertsPage.tsx, /style.css[22m
+[2m11:19:21 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/portalTypes.ts[22m
+[2m11:19:21 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/PortalStore.tsx, /style.css[22m
+[2m11:19:22 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/PortalStore.tsx[22m Could not Fast Refresh ("useOptionalUser" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m11:19:22 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/router.tsx, /style.css, /@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/KitLoginPage.tsx, /@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/layouts/OfficialLayout.tsx, /@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/CitizenDocumentsPage.tsx, /@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/components/ToastStack.tsx, /@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/components/AssistantDock.tsx, /@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/layouts/CitizenLayout.tsx, /@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/CitizenNotificationsPage.tsx, /@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/OfficialAlertsPage.tsx, /@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/src/components/SiteHeader.tsx[22m
+[2m11:21:09 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/layouts/CitizenLayout.tsx, /style.css[22m
+[2m11:21:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/CitizenStatusPage.tsx, /style.css[22m
+[2m11:21:56 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/CitizenStatusPage.tsx, /style.css[22m
+[2m11:22:11 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/CitizenNotificationsPage.tsx, /style.css[22m
+[2m11:22:34 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/CitizenDocumentsPage.tsx, /style.css[22m
+[2m11:23:15 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/OfficialReportsPage.tsx, /style.css[22m
+[2m11:23:38 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/CitizenStatusPage.tsx, /style.css[22m
+[2m11:23:38 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/RiskDotMap.tsx[22m
+[2m11:27:37 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/src/components/SiteFooter.tsx, /style.css[22m
+[2m11:27:37 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/Hero.tsx[22m
+[2m11:27:37 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/DashboardPage.tsx[22m
+[2m11:27:49 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/ImportantLinks.tsx[22m
+[2m11:27:49 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:/Users/Mohammed Razzaq/Desktop/SIH/portal-kit/src/pages/OfficialOverviewPage.tsx, /style.css[22m
+[2m11:28:13 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/CompensationCalculatorPage.tsx[22m
+[2m11:28:13 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/FaqsPage.tsx[22m
+[2m11:28:31 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/Hero.tsx[22m
+[2m11:28:31 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/pages/LandingPage.tsx[22m
+[2m11:28:38 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/RiskDotMap.tsx[22m
+[2m11:28:38 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mC:/Users/Mohammed Razzaq/Desktop/SIH/src/components/StatsBand.tsx[22m

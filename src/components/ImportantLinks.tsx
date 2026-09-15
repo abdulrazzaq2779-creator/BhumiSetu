@@ -92,9 +92,9 @@ interface Tile {
 
 const TILES: Tile[] = [
   {
-    // Relabelled from "Risk Dashboard" — route, icon, hover image and grid
+    // Relabelled from "Dashboard" — route, icon, hover image and grid
     // position unchanged; only the visible label text differs.
-    title: 'Dashboard',
+    title: 'Reports',
     subtitle: 'Colour-coded risk across all monitored projects',
     icon: 'dashboard',
     route: 'dashboard',

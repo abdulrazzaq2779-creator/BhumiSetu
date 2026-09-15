@@ -2,6 +2,7 @@ import Hero from '../components/Hero';
 import AboutSection from '../components/AboutSection';
 import ImportantLinks from '../components/ImportantLinks';
 import NewsTicker, { type TickerEntry } from '../components/NewsTicker';
+import Reveal from '../components/Reveal';
 import { tickerItems } from '../data/projects';
 import { routeHref } from '../hooks/useRoute';
 
@@ -25,21 +26,23 @@ export default function LandingPage() {
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-8 py-12 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-10">
-          <NewsTicker
-            items={tickerEntries}
-            className="h-[420px] self-start lg:sticky lg:top-6"
-          />
+          <Reveal>
+            <NewsTicker
+              items={tickerEntries}
+              className="h-[420px] self-start lg:sticky lg:top-6"
+            />
+          </Reveal>
 
-          <div className="min-w-0">
+          <Reveal delayMs={120} className="min-w-0">
             <AboutSection />
-          </div>
+          </Reveal>
         </div>
 
         {/* Full-width spacious link tiles — three ~340px columns need the
             whole content width, so this sits below the ticker/About row. */}
-        <div className="pb-16">
+        <Reveal className="pb-16">
           <ImportantLinks />
-        </div>
+        </Reveal>
       </div>
     </>
   );

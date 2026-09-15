@@ -24,7 +24,7 @@ const FAQS: Faq[] = [
   {
     id: 'access',
     q: 'Who can access the portal?',
-    a: 'The portal is built for District Collectors, State Revenue Departments and project implementing agencies. Public visitors can browse project risk levels on the dashboard, risk map and reports; login access for officers is issued through the District Administration Office — the portal does not create accounts directly.',
+    a: 'The portal is built for District Collectors, State Revenue Departments and project implementing agencies. Public visitors can browse project risk levels on the Reports page, the Risk Map and project detail pages; login access for officers is issued through the District Administration Office — the portal does not create accounts directly.',
   },
   {
     id: 'factors',
@@ -39,7 +39,7 @@ const FAQS: Faq[] = [
   {
     id: 'high-risk',
     q: 'What happens when a project is flagged High risk?',
-    a: 'The project rises to the top of the risk dashboard queue and its driving factors are listed with plain-language explanations and suggested corrective actions. District administrations use the queue to prioritise review — typically expediting compensation disbursement, clearing record mismatches or fast-tracking pending approvals before delays compound.',
+    a: 'The project rises to the top of the Reports queue and its driving factors are listed with plain-language explanations and suggested corrective actions. District administrations use the queue to prioritise review — typically expediting compensation disbursement, clearing record mismatches or fast-tracking pending approvals before delays compound.',
   },
   {
     id: 'data-sources',
@@ -49,7 +49,7 @@ const FAQS: Faq[] = [
   {
     id: 'refresh',
     q: 'How often do scores update?',
-    a: 'Scores refresh on each data cycle — currently a weekly batch run. When new data lands (a court order, a disbursement record, an approval), affected plots are re-scored and the dashboard, map and detail pages reflect the change from the next cycle onward.',
+    a: 'Scores refresh on each data cycle — currently a weekly batch run. When new data lands (a court order, a disbursement record, an approval), affected plots are re-scored and the Reports, map and detail pages reflect the change from the next cycle onward.',
   },
   {
     id: 'grievance-file',
